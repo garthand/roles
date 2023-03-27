@@ -1,5 +1,6 @@
 ---
 - name: Build munge RPMs
   ansible.builtin.command:
-    cmd: "rpmbuild -tb --with=verify --with=check /tmp/{{ munge_version }}.tar.xz"
+    cmd: "rpmbuild -tb --with=verify --with=check
+          /tmp/{{ munge_version }}.tar.xz"
 ...

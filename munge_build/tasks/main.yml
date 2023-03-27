@@ -19,17 +19,21 @@
 
 - name: Get the name of the latest available munge source archive
   set_fact:
-    munge_version: "{{ results.content | split('<title>Release ') | last | split | first }}"
+    munge_version: "{{ results.content | split('<title>Release ')
+                    | last | split | first }}"
 
 - name: Download munge source
   ansible.builtin.get_url:
-    url: "https://github.com/dun/munge/releases/download/{{ munge_version }}/{{ munge_version }}.tar.xz"
+    url: "https://github.com/dun/munge/releases/download/
+          {{ munge_version }}/{{ munge_version }}.tar.xz"
     dest: /tmp/
-    checksum: "sha512:https://github.com/dun/munge/releases/download/{{ munge_version }}/{{ munge_version }}.tar.xz.sha512"
+    checksum: "sha512:https://github.com/dun/munge/releases/download/
+               {{ munge_version }}/{{ munge_version }}.tar.xz.sha512"
 
 - name: Download munge GPG signature
   ansible.builtin.get_url:
-    url: "https://github.com/dun/munge/releases/download/{{ munge_version }}/{{ munge_version }}.tar.xz.asc"
+    url: "https://github.com/dun/munge/releases/download/
+          {{ munge_version }}/{{ munge_version }}.tar.xz.asc"
     dest: /tmp/
 
 - name: Download munge public key
