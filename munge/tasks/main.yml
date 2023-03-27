@@ -1,6 +1,6 @@
 ---
 - name: Include OS-specific variables
-  include_vars: "{{ ansible_os_family }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
 
 - name: Ensure munge dependencies are installed
   ansible.builtin.package:
@@ -18,29 +18,33 @@
   register: results
 
 - name: Get the name of the latest available munge source archive
-  set_fact:
-    munge_version: "{{ results.content | split('<title>Release ')
-                    | last | split | first }}"
+  ansible.builtin.set_fact:
+    munge_version: "{{ results.content | split('<title>Release ') |
+                    last | split | first }}"
+
+- name: Set full munge URL
+  ansible.builtin.set_fact:
+    munge_url: "{{ munge_url_base }}/{{ munge_version }}/{{ munge_version }}"
 
 - name: Download munge source
   ansible.builtin.get_url:
-    url: "https://github.com/dun/munge/releases/download/
-          {{ munge_version }}/{{ munge_version }}.tar.xz"
+    url: "{{ munge_url }}.tar.xz"
     dest: /tmp/
-    checksum: "sha512:https://github.com/dun/munge/releases/download/
-               {{ munge_version }}/{{ munge_version }}.tar.xz.sha512"
+    checksum: "sha512:{{ munge_url }}.tar.xz.sha512"
+    mode: '0700'
 
 - name: Download munge GPG signature
   ansible.builtin.get_url:
-    url: "https://github.com/dun/munge/releases/download/
-          {{ munge_version }}/{{ munge_version }}.tar.xz.asc"
+    url: "{{ munge_url }}.tar.xz.asc"
     dest: /tmp/
+    mode: '0700'
 
 - name: Download munge public key
   ansible.builtin.get_url:
     url: "https://github.com/dun.gpg"
     dest: /tmp/
+    mode: '0700'
 
 - name: Build munge package
-  include_tasks: "build-{{ ansible_os_family }}.yml"
+  ansible.builtin.include_tasks: "build-{{ ansible_os_family }}.yml"
 ...

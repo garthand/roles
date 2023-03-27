@@ -1,6 +1,0 @@
----
-openssl_libraries: openssl-devel
-bzip2_libraries: bzip2-devel
-zlib_libraries: zlib-devel
-package_builder: rpm-build
-...

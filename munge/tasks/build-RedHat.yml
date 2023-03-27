@@ -1,0 +1,5 @@
+---
+- name: Build munge RPMs
+  ansible.builtin.command:
+    cmd: "{{ rpmbuild_command }} /tmp/{{ munge_version }}.tar.xz"
+...
