@@ -11,6 +11,5 @@
   ansible.builtin.command:
     cmd: "{{ rpmbuild_command }} /tmp/{{ munge_version }}.tar.xz"
   when: munge_binaries.files | length != 6
-  register: rpmbuild_output
   changed_when: true
 ...
