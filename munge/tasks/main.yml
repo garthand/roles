@@ -29,20 +29,20 @@
 - name: Download munge source
   ansible.builtin.get_url:
     url: "{{ munge_url }}.tar.xz"
-    dest: /tmp/
+    dest: "/tmp/{{ munge_version }}.tar.xz"
     checksum: "sha512:{{ munge_url }}.tar.xz.sha512"
     mode: '0700'
 
 - name: Download munge GPG signature
   ansible.builtin.get_url:
     url: "{{ munge_url }}.tar.xz.asc"
-    dest: /tmp/
+    dest: "/tmp/{{ munge_version }}.tar.xz.asc"
     mode: '0700'
 
 - name: Download munge public key
   ansible.builtin.get_url:
     url: "https://github.com/dun.gpg"
-    dest: /tmp/
+    dest: "/tmp/dun.gpg"
     mode: '0700'
 
 - name: Build munge package
