@@ -1,0 +1,38 @@
+---
+- name: Ensures munge is installed
+  ansible.builtin.package:
+    name: munge
+    state: present
+
+- name: Ensure munge user exists
+  ansible.builtin.user:
+    name: munge
+    state: present
+    system: true
+    shell: /sbin/nologin
+
+- name: Ensure /etc/munge exists
+  ansible.builtin.file:
+    name: /etc/munge
+    owner: munge
+    group: munge
+    mode: '0700'
+
+- name: Ensure munge key exists
+  ansible.builtin.command:
+    cmd: "sudo -u munge {{ sbin_dir }}/mungekey"
+  creates: /etc/munge/munge.key
+
+- name: Ensure munge key has right ownership and permissions
+  ansible.builtin.file:
+    name: /etc/munge/munge.key
+    owner: munge
+    group: munge
+    mode: '0600'
+
+- name: Ensure munge service is started and enabled
+  ansible.builtin.service:
+    name: munge
+    state: started
+    enabled: true
+...
