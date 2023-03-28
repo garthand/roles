@@ -10,6 +10,6 @@
 - name: Build slurm RPMs if they have not already been built
   ansible.builtin.command:
     cmd: "{{ rpmbuild_command }} /tmp/{{ slurm_archive }}"
-  when: slurm_binaries.files | length != 6
+  when: slurm_binaries.files | length != 12
   changed_when: true
 ...
