@@ -1,0 +1,18 @@
+---
+epel_repository: "epel-release"
+hwloc_libraries: "hwloc-devel"
+hdf5_libraries: "hdf5-devel"
+man2html: "man2html"
+freeipmi_libraries: "freeipmi-devel"
+libibumad_libraries: "libibumad"
+libibmad_libraries: "infiniband-diags"
+lua_libraries: "lua-devel"
+mysql_libraries: "mariadb-devel"
+pam_libraries: "pam-devel"
+numa_libraries: "numactl-devel"
+readline_libraries: "readline-devel"
+rrdtool_libraries: "rrdtool-devel"
+gtk_libraries: "gtk2-devel"
+package_builder: "rpm-build"
+rpmbuild_command: "rpmbuild -tb"
+...
