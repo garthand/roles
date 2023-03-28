@@ -1,8 +1,8 @@
 ---
 galaxy_info:
-  role_name: munge
+  role_name: munge_builder
   author: Alex Mamach
-  description: Ensures munge is installed and configured correctly
+  description: Builds munge binaries from the latest source code
   license: "license GPLv3"
   min_ansible_version: "2.4"
   platforms:
