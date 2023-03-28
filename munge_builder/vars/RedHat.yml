@@ -1,4 +1,6 @@
 ---
+gcc: "gcc"
+make: "make"
 openssl_libraries: "openssl-devel"
 bzip2_libraries: "bzip2-devel"
 zlib_libraries: "zlib-devel"
