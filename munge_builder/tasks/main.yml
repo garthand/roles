@@ -1,0 +1,50 @@
+---
+- name: Include OS-specific variables
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Ensure munge dependencies are installed
+  ansible.builtin.package:
+    name:
+      - "{{ openssl_libraries }}"
+      - "{{ bzip2_libraries }}"
+      - "{{ zlib_libraries }}"
+      - "{{ package_builder }}"
+    state: present
+
+- name: Get munge GitHub page
+  ansible.builtin.uri:
+    url: https://github.com/dun/munge/releases/latest
+    return_content: true
+  register: results
+
+- name: Get the name of the latest available munge source archive
+  ansible.builtin.set_fact:
+    munge_version: "{{ results.content | split('<title>Release ') |
+                    last | split | first }}"
+
+- name: Set full munge URL
+  ansible.builtin.set_fact:
+    munge_url: "{{ munge_url_base }}/{{ munge_version }}/{{ munge_version }}"
+
+- name: Download munge source
+  ansible.builtin.get_url:
+    url: "{{ munge_url }}.tar.xz"
+    dest: "/tmp/{{ munge_version }}.tar.xz"
+    checksum: "sha512:{{ munge_url }}.tar.xz.sha512"
+    mode: '0700'
+
+- name: Download munge GPG signature
+  ansible.builtin.get_url:
+    url: "{{ munge_url }}.tar.xz.asc"
+    dest: "/tmp/{{ munge_version }}.tar.xz.asc"
+    mode: '0700'
+
+- name: Download munge public key
+  ansible.builtin.get_url:
+    url: "https://github.com/dun.gpg"
+    dest: "/tmp/dun.gpg"
+    mode: '0700'
+
+- name: Build munge package
+  ansible.builtin.include_tasks: "build-{{ ansible_os_family }}.yml"
+...
