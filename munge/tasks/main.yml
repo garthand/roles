@@ -21,7 +21,7 @@
 - name: Ensure munge key exists
   ansible.builtin.command:
     cmd: "sudo -u munge {{ sbin_dir }}/mungekey"
-  creates: /etc/munge/munge.key
+    creates: /etc/munge/munge.key
 
 - name: Ensure munge key has right ownership and permissions
   ansible.builtin.file:
