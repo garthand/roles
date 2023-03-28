@@ -1,0 +1,15 @@
+---
+- name: Check if the slurm binaries already exist
+  ansible.builtin.find:
+    paths: "/root/rpmbuild/"
+    patterns:
+      - "slurm*.rpm"
+    recurse: true
+  register: slurm_binaries
+
+- name: Build slurm RPMs if they have not already been built
+  ansible.builtin.command:
+    cmd: "{{ rpmbuild_command }} /tmp/{{ slurm_archive }}"
+  when: slurm_binaries.files | length != 6
+  changed_when: true
+...

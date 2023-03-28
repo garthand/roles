@@ -1,4 +1,6 @@
 ---
+gcc: "gcc"
+make: "make"
 epel_repository: "epel-release"
 hwloc_libraries: "hwloc-devel"
 hdf5_libraries: "hdf5-devel"
@@ -13,6 +15,8 @@ numa_libraries: "numactl-devel"
 readline_libraries: "readline-devel"
 rrdtool_libraries: "rrdtool-devel"
 gtk_libraries: "gtk2-devel"
+perl_libraries: "perl-ExtUtils-MakeMaker"
+python_libraries: "python3"
 package_builder: "rpm-build"
 rpmbuild_command: "rpmbuild -tb"
 ...

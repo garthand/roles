@@ -5,6 +5,8 @@
 - name: Ensure munge dependencies are installed
   ansible.builtin.package:
     name:
+      - "{{ gcc }}"
+      - "{{ make }}"
       - "{{ openssl_libraries }}"
       - "{{ bzip2_libraries }}"
       - "{{ zlib_libraries }}"

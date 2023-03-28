@@ -1,0 +1,54 @@
+---
+- name: Include OS-specific variables
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+
+# TODO make sure to use yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm for rhel7 and rhel8
+
+- name: Ensure slurm dependencies are installed
+  ansible.builtin.package:
+    name:
+      - "{{ gcc }}"
+      - "{{ make }}"
+      - "{{ epel_repository }}"
+      - "{{ hwloc_libraries }}"
+      - "{{ hdf5_libraries }}"
+      - "{{ man2html }}"
+      - "{{ freeipmi_libraries }}"
+      - "{{ libibumad_libraries }}"
+      - "{{ libibmad_libraries }}"
+      - "{{ lua_libraries }}"
+      - "{{ mysql_libraries }}"
+      - "{{ pam_libraries }}"
+      - "{{ numa_libraries }}"
+      - "{{ readline_libraries }}"
+      - "{{ rrdtool_libraries }}"
+      - "{{ gtk_libraries }}"
+      - "{{ perl_libraries }}"
+      - "{{ python_libraries }}"
+      - "{{ package_builder }}"
+    state: present
+
+- name: Get slurm download page
+  ansible.builtin.uri:
+    url: "{{ slurm_download_page }}"
+    return_content: true
+  register: results
+
+- name: Get the URL of the latest available slurm source archive
+  ansible.builtin.set_fact:
+    slurm_url: "{{ results.content | split('<h2>Download the latest stable version of Slurm&reg;</h2>') |
+                    last | split('\">') | first | split('href=\"') | last }}"
+
+- name: Get the name of the latest slurm source archive
+  ansible.builtin.set_fact:
+    slurm_archive: "{{ slurm_url | split('/') | last | split('\"') | first }}"
+
+- name: Download slurm source
+  ansible.builtin.get_url:
+    url: "{{ slurm_url }}"
+    dest: "/tmp/{{ slurm_archive }}"
+    mode: '0700'
+
+- name: Build slurm packages
+  ansible.builtin.include_tasks: "build-{{ ansible_os_family }}.yml"
+...
